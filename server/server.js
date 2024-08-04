@@ -1,15 +1,22 @@
 // server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 
+const path = require('path');
+const { fileURLToPath } = require('url');
+
+const __dirname1 = path.dirname(fileURLToPath(import.meta.url));
 mongoose.connect('mongodb+srv://vemanavbs2139:uqrfVdvTjNcslC9H@cluster0.iehxdto.mongodb.net/');
 
 app.use(express.json());
 app.use(cors()); 
+
+// to use client app in the server
+app.use(express.static(path.join(__dirname1,'/client/public'))); 
+app.get('/', (req, res) => res.sendFile(path.join(__dirname1,'/client/public/index.html')));
 
 const bookSchema = new mongoose.Schema({
 	title: String,
